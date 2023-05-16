@@ -9,6 +9,7 @@ export class GymService {
   async getGyms(): Promise<any> {
     console.log('chegando aqui');
     const result = await this.prisma.gym.findMany({});
+    console.log(result);
     if (!result) {
       throw new Error('No gyms found');
     }
