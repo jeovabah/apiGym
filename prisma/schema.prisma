@@ -12,7 +12,7 @@ model Gym {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   address     String?
-  icons       Json          // Will contain an array of IconsType objects
+  icons       Json?  
   iconIds    String[]      // Will contain an array of IconsType ids
   avaliation  String?
   km          String?
