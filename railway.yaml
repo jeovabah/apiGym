@@ -1,0 +1,16 @@
+version: 1
+plugins:
+  - railway/plugin-node
+
+commands:
+  - name: Install Prisma
+    command: npm install -g prisma
+    plugins:
+      - railway/plugin-node
+
+build:
+  env: production
+  command: |
+    npx prisma generate
+    npm ci
+    npm run build
