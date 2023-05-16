@@ -7,6 +7,7 @@ import { validateRequestCreateGym } from './gym.validate';
 export class GymService {
   constructor(private prisma: PrismaService) {}
   async getGyms(): Promise<any> {
+    console.log('chegando aqui');
     const result = await this.prisma.gym.findMany({});
     if (!result) {
       throw new Error('No gyms found');
