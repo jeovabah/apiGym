@@ -7,4 +7,8 @@ export interface GymsDTO {
   content?: string;
   phone: string;
   website?: string;
+  km?: string;
+  cupomActive?: boolean;
+  logo?: string;
+  iconIds?: string[];
 }
