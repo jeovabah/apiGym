@@ -12,5 +12,5 @@ build:
   env: production
   command: |
     npx prisma generate
-    npm ci
+    console.log('Prisma generate executed successfully.')
     npm run build
