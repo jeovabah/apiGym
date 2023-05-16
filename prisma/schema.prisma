@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Gym {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  address     String?
+  iconIds     String[] // Array of related icon IDs
+  avaliation  String?
+  km         String?
+  cupomActive Boolean? @default(false)
+  description String?
+  content     String? 
+  phone       String?
+  logo       String?
+  website     String? 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model IconsType {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  icon        String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model DeviceTokenExpo {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  token       String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
