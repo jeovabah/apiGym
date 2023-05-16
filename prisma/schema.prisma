@@ -12,7 +12,7 @@ model Gym {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   address     String?
-  icons       IconsType[]
+  icons       IconsTypeGym[]
   cupomActive Boolean?      @default(false)
   description String?
   content     String? 
@@ -24,14 +24,26 @@ model Gym {
 }
 
 model IconsType {
-  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  id          String        @id @default(auto()) @map("_id")  @db.ObjectId
   name        String
   icon        String
-  gym         Gym?          @relation(fields: [gymId], references: [id])
-  gymId       String?       @db.ObjectId
+  gym         IconsTypeGym[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
+
+model IconsTypeGym {
+  id          String        @id @default(auto()) @map("_id")  @db.ObjectId
+  iconsTypeId String        @db.ObjectId
+  gymId       String        @db.ObjectId
+  iconsType   IconsType     @relation(fields: [iconsTypeId], references: [id])
+  gym         Gym           @relation(fields: [gymId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+
+
 
 model DeviceTokenExpo {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
