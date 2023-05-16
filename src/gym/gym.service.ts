@@ -7,7 +7,7 @@ import { validateRequestCreateGym } from './gym.validate';
 export class GymService {
   constructor(private prisma: PrismaService) {}
   async getGyms(): Promise<any> {
-    const result = await this.prisma.gyms.findMany({});
+    const result = await this.prisma.gym.findMany({});
     if (!result) {
       throw new Error('No gyms found');
     }
@@ -16,7 +16,7 @@ export class GymService {
 
   async createGym(data: GymsDTO): Promise<any> {
     validateRequestCreateGym(data);
-    const result = await this.prisma.gyms.create({
+    const result = await this.prisma.gym.create({
       data: {
         address: data?.address,
         name: data?.name,
@@ -34,7 +34,7 @@ export class GymService {
   }
 
   async updateGym(data: GymsDTO): Promise<any> {
-    const result = await this.prisma.gyms.update({
+    const result = await this.prisma.gym.update({
       where: {
         id: data?.id,
       },
@@ -55,7 +55,7 @@ export class GymService {
   }
 
   async deleteGym(data: GymsDTO): Promise<any> {
-    const result = await this.prisma.gyms.delete({
+    const result = await this.prisma.gym.delete({
       where: {
         id: data?.id,
       },
