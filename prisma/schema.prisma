@@ -15,6 +15,7 @@ model Gym {
   icons       IconsTypeGym[]
   cupomActive Boolean?      @default(false)
   description String?
+  avaliation  String? @default("5")
   content     String? 
   phone       String?
   logo        String?
