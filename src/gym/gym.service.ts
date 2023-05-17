@@ -27,6 +27,10 @@ export class GymService {
         content: data?.content ?? '',
         phone: data?.phone,
         website: data?.website || '',
+        km: data?.km,
+        cupomActive: data?.cupomActive || false,
+        logo: data?.logo,
+        iconIds: data?.iconIds || [],
       },
     });
     if (!result) {
