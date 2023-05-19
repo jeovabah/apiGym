@@ -12,38 +12,41 @@ model Gym {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   address     String?
-  icons       IconsTypeGym[]
-  cupomActive Boolean?      @default(false)
+  latitude    Float?
+  longitude   Float?
+  valueMonth  Float?
   description String?
-  avaliation  String? @default("5")
-  content     String? 
-  phone       String?
+  phoneWpp    String?
+  instagram   String?
+  cupomActive Boolean?      @default(false)
   logo        String?
   website     String? 
+  anualStart String?
+  details1    String?
+  details2    String?
+  details3    String?
+  details4    String?
+  Profesionals GymProfesional[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
 
-model IconsType {
-  id          String        @id @default(auto()) @map("_id")  @db.ObjectId
-  name        String
-  icon        String
-  gym         IconsTypeGym[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+model Profesional {
+  id         String        @id @default(auto()) @map("_id") @db.ObjectId 
+  Gyms       GymProfesional[]
+
+  name       String
+  photoLink  String?
+  phoneWpp   String?
 }
 
-model IconsTypeGym {
-  id          String        @id @default(auto()) @map("_id")  @db.ObjectId
-  iconsTypeId String        @db.ObjectId
-  gymId       String        @db.ObjectId
-  iconsType   IconsType     @relation(fields: [iconsTypeId], references: [id])
+model GymProfesional {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
   gym         Gym           @relation(fields: [gymId], references: [id])
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  gymId       String       @db.ObjectId 
+  profesional Profesional   @relation(fields: [profesionalId], references: [id])
+  profesionalId String   @db.ObjectId 
 }
-
-
 
 
 model DeviceTokenExpo {
