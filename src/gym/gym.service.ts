@@ -7,9 +7,12 @@ import { validateRequestCreateGym } from './gym.validate';
 export class GymService {
   constructor(private prisma: PrismaService) {}
   async getGyms(): Promise<any> {
-    console.log('chegando aqui');
-    const result = await this.prisma.gym.findMany({});
-    console.log(result);
+    const result = await this.prisma.gym.findMany({
+      include: {
+        Profesionals: true,
+      },
+    });
+
     if (!result) {
       throw new Error('No gyms found');
     }
@@ -32,10 +35,10 @@ export class GymService {
         instagram: data?.instagram,
         valueMonth: data?.valueMonth,
         anualStart: data?.anualStart,
-        details1:    data?.details1,
-        details2:    data?.details2,
-        details3:    data?.details3,
-        details4:    data?.details4,
+        details1: data?.details1,
+        details2: data?.details2,
+        details3: data?.details3,
+        details4: data?.details4,
       },
     });
     if (!result) {
@@ -62,10 +65,10 @@ export class GymService {
         instagram: data?.instagram,
         valueMonth: data?.valueMonth,
         anualStart: data?.anualStart,
-        details1:    data?.details1,
-        details2:    data?.details2,
-        details3:    data?.details3,
-        details4:    data?.details4,
+        details1: data?.details1,
+        details2: data?.details2,
+        details3: data?.details3,
+        details4: data?.details4,
       },
     });
     if (!result) {
