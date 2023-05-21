@@ -9,7 +9,11 @@ export class GymService {
   async getGyms(): Promise<any> {
     const result = await this.prisma.gym.findMany({
       include: {
-        Profesionals: true,
+        Profesionals: {
+          select: {
+            profesional: true,
+          },
+        },
       },
     });
 
