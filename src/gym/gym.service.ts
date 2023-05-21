@@ -7,20 +7,24 @@ import { validateRequestCreateGym } from './gym.validate';
 export class GymService {
   constructor(private prisma: PrismaService) {}
   async getGyms(): Promise<any> {
-    const result = await this.prisma.gym.findMany({
+    const gyms = await this.prisma.gym.findMany({
       include: {
-        Profesionals: {
-          select: {
-            profesional: true,
-          },
-        },
+        Profesionals: true,
       },
     });
 
-    if (!result) {
+    if (!gyms) {
       throw new Error('No gyms found');
     }
-    return result;
+
+    // Extrair apenas os profissionais de cada academia
+    const gymsWithProfessionals = gyms.map((gym) => ({
+      ...gym,
+      gymId: gym.id,
+      professionals: gym.Profesionals,
+    }));
+
+    return gymsWithProfessionals;
   }
 
   async createGym(data: GymsDTO): Promise<any> {
