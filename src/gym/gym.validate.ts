@@ -10,5 +10,4 @@ export const validateRequestCreateGym = (body: GymsDTO) => {
   if (!address) {
     throw new Error('Endereço é obrigatório');
   }
-
 };

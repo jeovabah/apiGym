@@ -58,12 +58,13 @@ export class GymController {
     }
   }
 
-  @Delete('delete')
+  @Post('delete')
   async deleteGym(
     @Res() response: Response,
     @Body() body: GymsDTO,
   ): Promise<any> {
     try {
+      console.log(body);
       const gym = await this.gymservice.deleteGym(body);
 
       return response.status(200).json({

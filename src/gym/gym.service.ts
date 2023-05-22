@@ -25,6 +25,7 @@ export class GymService {
 
   async createGym(data: GymsDTO): Promise<any> {
     validateRequestCreateGym(data);
+    console.log(data);
     const result = await this.prisma.gym.create({
       data: {
         address: data?.address,
@@ -82,14 +83,35 @@ export class GymService {
   }
 
   async deleteGym(data: GymsDTO): Promise<any> {
-    const result = await this.prisma.gym.delete({
+    console.log(data.id);
+
+    // Verificar se existem registros relacionados na tabela GymProfesional
+    const gymProfesionals = await this.prisma.gymProfesional.findMany({
       where: {
-        id: data?.id,
+        gymId: data.id,
       },
     });
+
+    // Remover registros relacionados na tabela GymProfesional
+    if (gymProfesionals.length > 0) {
+      await this.prisma.gymProfesional.deleteMany({
+        where: {
+          gymId: data.id,
+        },
+      });
+    }
+
+    // Excluir a academia
+    const result = await this.prisma.gym.delete({
+      where: {
+        id: data.id,
+      },
+    });
+
     if (!result) {
       throw new Error('Academia não deletada');
     }
+
     return result;
   }
 }
