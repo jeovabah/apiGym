@@ -74,4 +74,49 @@ export class GymController {
       console.log(e);
     }
   }
+
+  @Post('profesional/create')
+  async profesionalCreate(
+    @Res() response: Response,
+    @Body() body: any,
+  ): Promise<any> {
+    try {
+      const gym = await this.gymservice.profesionalCreate(body);
+
+      return response.status(200).json({
+        gym,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  @Post('profesional/delete')
+  async profesionalDelete(
+    @Res() response: Response,
+    @Body() body: any,
+  ): Promise<any> {
+    try {
+      const gym = await this.gymservice.profesionalDelete(body);
+
+      return response.status(200).json({
+        gym,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  @Patch('profesional/update')
+  async profesionalUpdate(@Res() response: Response, @Body() body: any) {
+    try {
+      const gym = await this.gymservice.profesionalUpdate(body);
+
+      return response.status(200).json({
+        gym,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }

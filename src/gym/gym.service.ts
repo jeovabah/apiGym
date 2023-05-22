@@ -114,4 +114,76 @@ export class GymService {
 
     return result;
   }
+
+  async profesionalCreateForGym(data: any) {
+    const result = await this.prisma.gymProfesional.create({
+      data: {
+        gymId: data.gymId,
+        profesionalId: data.profesionalId,
+      },
+    });
+
+    if (!result) {
+      throw new Error('Academia não cadastrada');
+    }
+    return result;
+  }
+
+  async profesionalCreate(data: any) {
+    const result = await this.prisma.profesional.create({
+      data: {
+        name: data.name,
+        phoneWpp: data.phoneWpp,
+        photoLink: data.photoLink,
+      },
+    });
+
+    const response = await this.profesionalCreateForGym({
+      gymId: data.gymId,
+      profesionalId: result.id,
+    });
+
+    if (!response) {
+      throw new Error('Profissional não cadastrado');
+    }
+
+    if (!result || !response) {
+      throw new Error('Profissional não cadastrado');
+    }
+
+    return result;
+  }
+
+  async profesionalDelete(data: any) {
+    const result = await this.prisma.profesional.delete({
+      where: {
+        id: data.id,
+      },
+    });
+
+    if (!result) {
+      throw new Error('Profissional não deletado');
+    }
+
+    return result;
+  }
+
+  async profesionalUpdate(data: any) {
+    const result = await this.prisma.profesional.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        name: data.name,
+        phoneWpp: data.phoneWpp,
+        photoLink: data.photoLink,
+      },
+    });
+
+    if (!result) {
+      throw new Error('Profissional não atualizado');
+    }
+
+    return result;
+  }
 }
