@@ -18,7 +18,6 @@ export class GymController {
   @Get()
   async getGyms(@Res() response: Response): Promise<any> {
     try {
-      console.log('cehgando na controller');
       const gyms = await this.gymservice.getGyms();
       return response.status(200).json(gyms);
     } catch (e) {
@@ -70,6 +69,16 @@ export class GymController {
       return response.status(200).json({
         gym,
       });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  @Get('profesional')
+  async getProfesional(@Res() response: Response): Promise<any> {
+    try {
+      const gyms = await this.gymservice.getProfesionals();
+      return response.status(200).json(gyms);
     } catch (e) {
       console.log(e);
     }

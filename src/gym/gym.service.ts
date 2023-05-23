@@ -115,6 +115,23 @@ export class GymService {
     return result;
   }
 
+  async getProfesionals() {
+    const result = await this.prisma.profesional.findMany({
+      include: {
+        Gyms: {
+          include: {
+            gym: true,
+          },
+        },
+      },
+    });
+
+    if (!result) {
+      throw new Error('Sem profissionais encontrados');
+    }
+    return result;
+  }
+
   async profesionalCreateForGym(data: any) {
     const result = await this.prisma.gymProfesional.create({
       data: {
@@ -155,6 +172,16 @@ export class GymService {
   }
 
   async profesionalDelete(data: any) {
+    const response = await this.prisma.gymProfesional.deleteMany({
+      where: {
+        profesionalId: data.id,
+      },
+    });
+
+    if (!response) {
+      throw new Error('Profissional não deletado');
+    }
+
     const result = await this.prisma.profesional.delete({
       where: {
         id: data.id,
