@@ -4,10 +4,14 @@ import { AppService } from './app.service';
 import { GymModule } from './gym/gym.module';
 import { PrismaService } from './prisma.service';
 import { NotificationModule } from './notification/notification.module';
+import { APP_GUARD } from '@nestjs/core';
+import { GlobalAuthGuard } from './global.auth';
+import { UsersModule } from './users/users.module';
+import { CommunitiesModule } from './communities/communities.module';
 
 @Module({
-  imports: [GymModule, NotificationModule],
+  imports: [GymModule, NotificationModule, UsersModule, CommunitiesModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}

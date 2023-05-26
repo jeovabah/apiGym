@@ -6,16 +6,18 @@ import {
   Patch,
   Post,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { GymService } from './gym.service';
 import { Response } from 'express';
 import { GymsDTO } from './gym.dto';
+import { GlobalAuthGuard } from 'src/global.auth';
 
 @Controller('gym')
 export class GymController {
   constructor(private readonly gymservice: GymService) {}
-
   @Get()
+  // @UseGuards(GlobalAuthGuard) // Deixando o endpoint privado
   async getGyms(@Res() response: Response): Promise<any> {
     try {
       const gyms = await this.gymservice.getGyms();
