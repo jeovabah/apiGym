@@ -54,6 +54,9 @@ export class CommunitiesService {
           },
         },
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
