@@ -8,28 +8,30 @@ import * as fs from 'fs';
 import path from 'path';
 import { bucket } from 'src/main';
 import { firebaseConfig } from 'src/docs/appgym-key';
+import { ImageFirebase } from 'src/Helpers';
+
+export interface PropsCommunity {
+  id?: string;
+  description: string;
+  photoLink?: string | null;
+  likes?: number;
+  userId: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  comments?: any;
+}
 
 @Injectable()
 export class CommunitiesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createCommunityDto: any) {
-    const { photoLink, ...rest } = createCommunityDto;
-
+  async create(file: any, createCommunityDto: PropsCommunity) {
+    const { ...rest } = createCommunityDto;
     let photoURL = '';
 
-    if (photoLink) {
-      const filename = path.basename(photoLink);
-      const filepath = path.resolve(photoLink);
-
-      if (!fs.existsSync(filepath)) {
-        throw new HttpException(`File ${photoLink} not found`, 404);
-      }
-
-      await bucket.upload(filepath, { destination: filename });
-
+    if (file) {
       // Atualizado para usar seu Firebase Storage bucket
-      photoURL = `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig?.storageBucket}/o/${filename}?alt=media`;
+      photoURL = await ImageFirebase(file);
     }
 
     return await this.prisma.community.create({
@@ -42,7 +44,16 @@ export class CommunitiesService {
 
   async findAll() {
     return await this.prisma.community.findMany({
-      include: { comments: true },
+      include: {
+        comments: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            photoLink: true,
+          },
+        },
+      },
     });
   }
 
@@ -128,7 +139,8 @@ export class CommunitiesService {
 
     return await this.prisma.commentsInCommunity.create({
       data: {
-        ...commentDto,
+        comment: commentDto.comment,
+        userId: commentDto.userId,
         communityId: id,
       },
     });

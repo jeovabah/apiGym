@@ -6,10 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { CommunitiesService } from './communities.service';
+import { CommunitiesService, PropsCommunity } from './communities.service';
 import { CreateCommunityDto } from './dto/create-community.dto';
 import { UpdateCommunityDto } from './dto/update-community.dto';
+import { diskStorage } from 'multer';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('communities')
 export class CommunitiesController {
@@ -22,8 +26,17 @@ export class CommunitiesController {
 
   // Post a new community
   @Post()
-  create(@Body() createCommunityDto: CreateCommunityDto) {
-    return this.communitiesService.create(createCommunityDto);
+  @UseInterceptors(FileInterceptor('photoLink'))
+  async create(
+    @UploadedFile() file,
+    @Body() createCommunityDto: PropsCommunity,
+  ) {
+    const response = await this.communitiesService.create(
+      file,
+      createCommunityDto,
+    );
+
+    return response;
   }
 
   // Get all communities
