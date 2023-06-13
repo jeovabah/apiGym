@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
+import { ImageFirebase } from 'src/Helpers';
 
 @Injectable()
 export class UsersService {
@@ -52,5 +53,17 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async updatePhoto(file: any, body) {
+    let photoURL = '';
+
+    const { id } = body;
+
+    if (file) {
+      photoURL = await ImageFirebase(file);
+    }
+
+    // return await this.prisma.user.update();
   }
 }

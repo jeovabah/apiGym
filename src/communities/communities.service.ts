@@ -45,7 +45,11 @@ export class CommunitiesService {
   async findAll() {
     return await this.prisma.community.findMany({
       include: {
-        comments: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
         user: {
           select: {
             id: true,
