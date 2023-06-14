@@ -112,7 +112,7 @@ export class CommunitiesService {
           },
         },
       });
-
+      updatedCommunity['likedNow'] = false;
       return updatedCommunity;
     }
 
@@ -133,7 +133,8 @@ export class CommunitiesService {
         },
       },
     });
-
+    updatedCommunity['likedNow'] = true;
+    console.log(updatedCommunity);
     return updatedCommunity;
   }
 
