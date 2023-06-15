@@ -44,6 +44,7 @@ export class GymService {
         details2: data?.details2,
         details3: data?.details3,
         details4: data?.details4,
+        images: data?.images,
       },
     });
     if (!result) {
@@ -74,6 +75,7 @@ export class GymService {
         details2: data?.details2,
         details3: data?.details3,
         details4: data?.details4,
+        images: data?.images,
       },
     });
     if (!result) {

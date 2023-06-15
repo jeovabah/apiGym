@@ -16,4 +16,5 @@ export interface GymsDTO {
   details2?: string;
   details3?: string;
   details4?: string;
+  images?: string[];
 }
