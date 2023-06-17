@@ -45,7 +45,11 @@ export class CommunitiesService {
   async findAll() {
     return await this.prisma.community.findMany({
       include: {
-        comments: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
         user: {
           select: {
             id: true,
@@ -53,6 +57,7 @@ export class CommunitiesService {
             photoLink: true,
           },
         },
+        communityLikes: true, // Inclui os likes recebidos pela comunidade
       },
       orderBy: {
         createdAt: 'desc',
@@ -73,16 +78,54 @@ export class CommunitiesService {
     return community;
   }
 
-  async like(id: string) {
+  async like(request: { id: string; userId: string }) {
+    const { id, userId } = request;
     const community = await this.prisma.community.findUnique({
       where: { id },
+      include: { user: true },
     });
 
     if (!community) {
       throw new NotFoundException(`Community with id ${id} not found`);
     }
 
-    return await this.prisma.community.update({
+    // Verifica se o usuário já deu like nessa comunidade
+    const existingLike = await this.prisma.like.findFirst({
+      where: {
+        communityId: community.id,
+        userId: userId,
+      },
+    });
+
+    if (existingLike) {
+      // Remove o like existente
+      await this.prisma.like.delete({
+        where: { id: existingLike.id },
+      });
+
+      // Decrementa o número de likes na comunidade
+      const updatedCommunity = await this.prisma.community.update({
+        where: { id },
+        data: {
+          likes: {
+            decrement: 1,
+          },
+        },
+      });
+      updatedCommunity['likedNow'] = false;
+      return updatedCommunity;
+    }
+
+    // Cria um novo registro no modelo `Like`
+    const newLike = await this.prisma.like.create({
+      data: {
+        user: { connect: { id: userId } },
+        community: { connect: { id: community.id } },
+      },
+    });
+
+    // Incrementa o número de likes na comunidade
+    const updatedCommunity = await this.prisma.community.update({
       where: { id },
       data: {
         likes: {
@@ -90,6 +133,9 @@ export class CommunitiesService {
         },
       },
     });
+    updatedCommunity['likedNow'] = true;
+    console.log(updatedCommunity);
+    return updatedCommunity;
   }
 
   async update(id: string, updateCommunityDto: UpdateCommunityDto) {

@@ -47,6 +47,7 @@ export class GymService {
         shifts: {
           create: data?.shifts,
         },
+        images: data?.images,
       },
     });
     if (!result) {
@@ -80,6 +81,7 @@ export class GymService {
         shifts: {
           create: data?.shifts,
         },
+        images: data?.images,
       },
     });
     if (!result) {

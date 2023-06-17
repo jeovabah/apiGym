@@ -9,11 +9,14 @@ import {
   UseGuards,
   Res,
   Req,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { Response, response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UsersController {
@@ -60,5 +63,17 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
+  }
+
+  @Post('photoUpdate')
+  @UseInterceptors(FileInterceptor('photoLink'))
+  photoUpdate(@UploadedFile() file, @Param('id') id: string) {
+    try {
+      const photoUser = this.usersService.updatePhoto(file, { id });
+
+      return response.status(200).json(photoUser);
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

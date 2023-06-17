@@ -8,6 +8,7 @@ import {
   Delete,
   UploadedFile,
   UseInterceptors,
+  HttpException,
 } from '@nestjs/common';
 import { CommunitiesService, PropsCommunity } from './communities.service';
 import { CreateCommunityDto } from './dto/create-community.dto';
@@ -19,9 +20,14 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class CommunitiesController {
   constructor(private readonly communitiesService: CommunitiesService) {}
 
-  @Post(':id/like')
-  like(@Param('id') id: string) {
-    return this.communitiesService.like(id);
+  @Post('/like')
+  async like(@Body() request: { id: string; userId: string }) {
+    try {
+      const response = await this.communitiesService.like(request);
+      return new HttpException(response, 200);
+    } catch (e) {
+      throw new HttpException(e.message, 400);
+    }
   }
 
   // Post a new community
