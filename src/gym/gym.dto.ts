@@ -16,4 +16,13 @@ export interface GymsDTO {
   details2?: string;
   details3?: string;
   details4?: string;
+  shifts?: ShiftsDTO[];
+}
+
+interface ShiftsDTO {
+  id?: string;
+  day: string;
+  shift: string;
+
+  gymId?: string;
 }

@@ -14,6 +14,7 @@ export class GymService {
             profesional: true,
           },
         },
+        shifts: true,
       },
     });
 
@@ -25,7 +26,6 @@ export class GymService {
 
   async createGym(data: GymsDTO): Promise<any> {
     validateRequestCreateGym(data);
-    console.log(data);
     const result = await this.prisma.gym.create({
       data: {
         address: data?.address,
@@ -44,6 +44,9 @@ export class GymService {
         details2: data?.details2,
         details3: data?.details3,
         details4: data?.details4,
+        shifts: {
+          create: data?.shifts,
+        },
       },
     });
     if (!result) {
@@ -74,6 +77,9 @@ export class GymService {
         details2: data?.details2,
         details3: data?.details3,
         details4: data?.details4,
+        shifts: {
+          create: data?.shifts,
+        },
       },
     });
     if (!result) {
