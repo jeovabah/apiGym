@@ -64,6 +64,11 @@ export class UsersService {
       photoURL = await ImageFirebase(file);
     }
 
-    // return await this.prisma.user.update();
+    return await this.prisma.user.update({
+      where: { id: id },
+      data: {
+        photoLink: photoURL,
+      },
+    });
   }
 }
