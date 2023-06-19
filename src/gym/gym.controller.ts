@@ -73,6 +73,10 @@ export class GymController {
       });
     } catch (e) {
       console.log(e);
+
+      return response.status(400).json({
+        message: 'Erro ao deletar',
+      });
     }
   }
 

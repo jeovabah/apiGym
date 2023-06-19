@@ -91,8 +91,6 @@ export class GymService {
   }
 
   async deleteGym(data: GymsDTO): Promise<any> {
-    console.log(data.id);
-
     // Verificar se existem registros relacionados na tabela GymProfesional
     const gymProfesionals = await this.prisma.gymProfesional.findMany({
       where: {
@@ -103,6 +101,22 @@ export class GymService {
     // Remover registros relacionados na tabela GymProfesional
     if (gymProfesionals.length > 0) {
       await this.prisma.gymProfesional.deleteMany({
+        where: {
+          gymId: data.id,
+        },
+      });
+    }
+
+    // Verificar se existem registros relacionados na tabela GymShift
+    const gymShifts = await this.prisma.shift.findMany({
+      where: {
+        gymId: data.id,
+      },
+    });
+
+    // Remover registros relacionados na tabela GymShift
+    if (gymShifts.length > 0) {
+      await this.prisma.shift.deleteMany({
         where: {
           gymId: data.id,
         },
