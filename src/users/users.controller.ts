@@ -51,9 +51,13 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @Res() response: Response,
+  ) {
     try {
-      const user = this.usersService.update(id, updateUserDto);
+      const user = await this.usersService.update(id, updateUserDto);
       return response.status(200).json(user);
     } catch (e) {
       throw 'Erro interno';

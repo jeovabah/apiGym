@@ -37,8 +37,6 @@ export class UsersService {
 
     const user = users[0];
 
-    console.log(user);
-
     return user;
   }
 
