@@ -31,7 +31,7 @@ export class UsersController {
       const user = await this.usersService.create(createUserDto);
       return response.status(200).json(user);
     } catch (e) {
-      console.log(e);
+      throw 'Erro interno';
     }
   }
 
@@ -46,7 +46,7 @@ export class UsersController {
       const user = await this.usersService.findOne(body);
       return response.status(200).json(user);
     } catch (error) {
-      console.log(error);
+      throw 'Erro interno';
     }
   }
 
@@ -56,7 +56,7 @@ export class UsersController {
       const user = this.usersService.update(id, updateUserDto);
       return response.status(200).json(user);
     } catch (e) {
-      console.log(e);
+      throw 'Erro interno';
     }
   }
 
@@ -67,13 +67,17 @@ export class UsersController {
 
   @Post('photoUpdate')
   @UseInterceptors(FileInterceptor('photoLink'))
-  photoUpdate(@UploadedFile() file, @Param('id') id: string) {
+  async photoUpdate(
+    @UploadedFile() file,
+    @Body() request: Request,
+    @Res() response: Response,
+  ) {
     try {
-      const photoUser = this.usersService.updatePhoto(file, { id });
+      const photoUser = await this.usersService.updatePhoto(file, request);
 
       return response.status(200).json(photoUser);
     } catch (e) {
-      console.log(e);
+      throw 'Erro interno';
     }
   }
 }
