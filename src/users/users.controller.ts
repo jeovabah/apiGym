@@ -12,7 +12,7 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
-import { Response, response } from 'express';
+import { Request, Response, response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -73,7 +73,7 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('photoLink'))
   async photoUpdate(
     @UploadedFile() file,
-    @Body() request: Request,
+    @Body() request: any,
     @Res() response: Response,
   ) {
     try {
