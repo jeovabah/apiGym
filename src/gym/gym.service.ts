@@ -86,6 +86,9 @@ export class GymService {
           create: data?.shifts,
         },
         images: data?.images,
+        listPrices: {
+          create: data?.listPrices,
+        },
       },
     });
     if (!result) {
