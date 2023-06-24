@@ -18,6 +18,7 @@ export interface GymsDTO {
   details4?: string;
   images?: string[];
   shifts?: ShiftsDTO[];
+  listPrices?: PricesDTO[];
 }
 
 interface ShiftsDTO {
@@ -25,4 +26,12 @@ interface ShiftsDTO {
   day: string;
   shift: string;
   gymId?: string;
+}
+
+interface PricesDTO {
+  id?: string;
+  price: number;
+  name: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 }

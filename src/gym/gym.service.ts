@@ -48,6 +48,9 @@ export class GymService {
           create: data?.shifts,
         },
         images: data?.images,
+        listPrices: {
+          create: data?.listPrices,
+        },
       },
     });
     if (!result) {
@@ -117,6 +120,21 @@ export class GymService {
     // Remover registros relacionados na tabela GymShift
     if (gymShifts.length > 0) {
       await this.prisma.shift.deleteMany({
+        where: {
+          gymId: data.id,
+        },
+      });
+    }
+
+    // Verificar se existem registros relacionados na tabela GymPrice
+    const gymPrices = await this.prisma.prices.findMany({
+      where: {
+        gymId: data.id,
+      },
+    });
+
+    if (gymPrices.length > 0) {
+      await this.prisma.prices.deleteMany({
         where: {
           gymId: data.id,
         },
