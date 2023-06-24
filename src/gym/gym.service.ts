@@ -15,6 +15,7 @@ export class GymService {
           },
         },
         shifts: true,
+        listPrices: true,
       },
     });
 
