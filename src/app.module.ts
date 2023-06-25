@@ -8,9 +8,16 @@ import { APP_GUARD } from '@nestjs/core';
 import { GlobalAuthGuard } from './global.auth';
 import { UsersModule } from './users/users.module';
 import { CommunitiesModule } from './communities/communities.module';
+import { TrainnersModule } from './trainners/trainners.module';
 
 @Module({
-  imports: [GymModule, NotificationModule, UsersModule, CommunitiesModule],
+  imports: [
+    GymModule,
+    NotificationModule,
+    UsersModule,
+    CommunitiesModule,
+    TrainnersModule,
+  ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
