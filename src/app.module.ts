@@ -9,6 +9,7 @@ import { GlobalAuthGuard } from './global.auth';
 import { UsersModule } from './users/users.module';
 import { CommunitiesModule } from './communities/communities.module';
 import { TrainnersModule } from './trainners/trainners.module';
+import { AlertsModule } from './alerts/alerts.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TrainnersModule } from './trainners/trainners.module';
     UsersModule,
     CommunitiesModule,
     TrainnersModule,
+    AlertsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
