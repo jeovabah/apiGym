@@ -159,3 +159,13 @@ model TrainnerDetails {
   updatedAt   DateTime      @updatedAt
 }
 
+model PostDinamically {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  title       String?        @default("Atenção você poderá ganhar prêmios ao usar a nossa comunidade!")
+  description String?        @default("A cada 10 postagens você ganha a chance de girar a roleta e ganhar prêmios!")
+  buttonTitle String?        @default("Quero ganhar prêmios!")
+  photoLink   String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
