@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { NotificationDTO } from './notification.dto';
-import { Expo } from 'expo-server-sdk';
+import { Expo, ExpoPushMessage } from 'expo-server-sdk';
 import { keyFirebase } from 'src/docs/appgym-key';
+import * as admin from 'firebase-admin';
 
 @Injectable()
 export class NotificationService {
-  constructor(private prisma: PrismaService, private expo: Expo) {
-    this.expo = new Expo({ accessToken: keyFirebase.private_key });
-  }
+  private expo = new Expo();
+  constructor(private prisma: PrismaService) {}
 
   async storageDeviceToken(body: any): Promise<any> {
     const { token } = body;
@@ -43,11 +43,10 @@ export class NotificationService {
       const { title, body } = request;
       const deviceTokens = await this.getDeviceTokens();
 
-      const messages = [];
-
+      const messages: ExpoPushMessage[] = [];
       for (let deviceToken of deviceTokens) {
-        const pushToken = deviceToken.token;
-
+        // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
+        let pushToken = deviceToken.token;
         if (!Expo.isExpoPushToken(pushToken)) {
           console.error(
             `Push token ${pushToken} is not a valid Expo push token`,
@@ -60,25 +59,24 @@ export class NotificationService {
           sound: 'default',
           title: title,
           body: body,
-          data: { someData: 'goes here' },
+          data: { withSome: 'data' },
         });
       }
 
-      const chunks = this.expo.chunkPushNotifications(messages);
-      const tickets = [];
-
-      for (const chunk of chunks) {
+      let chunks = this.expo.chunkPushNotifications(messages);
+      let tickets = [];
+      for (let chunk of chunks) {
         try {
-          const ticketChunk = await this.expo.sendPushNotificationsAsync(chunk);
+          let ticketChunk = await this.expo.sendPushNotificationsAsync(chunk);
           tickets.push(...ticketChunk);
+          // NOTE: If a ticket contains an error code in ticket.details.error, you must handle it appropriately.
+          console.log(ticketChunk);
         } catch (error) {
           console.error(error);
         }
       }
-
-      console.log('Successfully sent notifications:', tickets);
     } catch (e) {
-      console.log(e);
+      console.log('Error sending notifications:', e);
     }
   }
 }
