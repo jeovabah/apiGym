@@ -126,11 +126,14 @@ model Community {
   updatedAt        DateTime             @updatedAt
   communityLikes   Like[]               // Representa os likes recebidos pela comunidade
 }
-
 model Trainner {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  trainnerDetails TrainnerDetails[]
+  photoLink   String?
+  phoneWpp    String?
+  price       Float?
+  description String?
+  about       String?
   actuation   Actuation[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
@@ -141,20 +144,6 @@ model Actuation {
   trainnerId  String        @db.ObjectId
   trainner    Trainner      @relation(fields: [trainnerId], references: [id])
   actuation   String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-}
-
-model TrainnerDetails {
-  id          String        @id @default(auto()) @map("_id") @db.ObjectId
-  trainner    Trainner      @relation(fields: [trainnerId], references: [id])
-  trainnerId  String        @db.ObjectId
-  name        String
-  photoLink   String?
-  phoneWpp    String?
-  price       Float?
-  description String?
-  about       String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }

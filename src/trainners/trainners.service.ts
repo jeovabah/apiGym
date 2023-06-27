@@ -15,11 +15,42 @@ export class TrainnersService {
     return trainner;
   }
 
+  async createActuation(trainnerId: string, actuationData: any) {
+    const actuation = await this.prisma.actuation.create({
+      data: {
+        ...actuationData,
+        trainner: {
+          connect: {
+            id: trainnerId,
+          },
+        },
+      },
+    });
+
+    return actuation;
+  }
+
+  async updateActuation(id: string, actuationId: string) {
+    const trainner = await this.prisma.trainner.update({
+      where: {
+        id: id,
+      },
+      data: {
+        actuation: {
+          connect: {
+            id: actuationId,
+          },
+        },
+      },
+    });
+
+    return trainner;
+  }
+
   async findAll() {
     const trainners = await this.prisma.trainner.findMany({
       include: {
         actuation: true,
-        trainnerDetails: true,
       },
     });
 
@@ -31,20 +62,23 @@ export class TrainnersService {
       where: {
         id: id,
       },
+      include: {
+        actuation: true,
+      },
     });
 
     return trainner;
   }
 
   async update(id: string, updateTrainnerDto: UpdateTrainnerDto) {
-    const updateTrainner = await this.prisma.trainner.update({
+    const updatedTrainner = await this.prisma.trainner.update({
       where: {
         id: id,
       },
       data: updateTrainnerDto,
     });
 
-    return updateTrainner;
+    return updatedTrainner;
   }
 
   async remove(id: string) {

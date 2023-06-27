@@ -33,6 +33,26 @@ export class TrainnersController {
     }
   }
 
+  @Post(':id/actuation')
+  async createActuation(
+    @Param('id') id: string,
+    @Body() actuationData: any,
+    @Res() response: Response,
+  ) {
+    try {
+      const actuation = await this.trainnersService.createActuation(
+        id,
+        actuationData,
+      );
+      return response.status(200).json({
+        actuation,
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   @Get()
   async findAll(@Res() response: Response) {
     try {
