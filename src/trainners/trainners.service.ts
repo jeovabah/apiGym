@@ -12,6 +12,22 @@ export class TrainnersService {
       data: createTrainnerDto,
     });
 
+    const actuationId = createTrainnerDto.actuationId;
+
+    if (actuationId) {
+      await this.prisma.trainner.update({
+        where: {
+          id: trainner.id,
+        },
+        data: {
+          actuation: {
+            connect: {
+              id: actuationId,
+            },
+          },
+        },
+      });
+    }
     return trainner;
   }
 
@@ -30,7 +46,7 @@ export class TrainnersService {
     return actuation;
   }
 
-  async updateActuation(id: string, actuationId: string) {
+  async updateActuation(id: string, actuationId: string, data) {
     const trainner = await this.prisma.trainner.update({
       where: {
         id: id,
@@ -45,6 +61,16 @@ export class TrainnersService {
     });
 
     return trainner;
+  }
+
+  async findAllActuations() {
+    const actuations = await this.prisma.actuation.findMany({
+      include: {
+        trainner: true,
+      },
+    });
+
+    return actuations;
   }
 
   async findAll() {

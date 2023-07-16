@@ -5,4 +5,5 @@ export class CreateTrainnerDto {
   updatedAt?: Date | string;
   trainnerDetails?: any;
   actuation?: any;
+  actuationId?: string;
 }

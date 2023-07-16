@@ -53,6 +53,42 @@ export class TrainnersController {
     }
   }
 
+  @Patch(':id/actuation/:actuationId')
+  async updateActuation(
+    @Param('id') id: string,
+    @Param('actuationId') actuationId: string,
+    @Body() actuationData: any,
+    @Res() response: Response,
+  ) {
+    try {
+      console.log('chegando aqui');
+      const trainner = await this.trainnersService.updateActuation(
+        id,
+        actuationId,
+        actuationData,
+      );
+      return response.status(200).json({
+        trainner,
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  @Get('all/actuations')
+  async findAllActuations(@Res() response: Response) {
+    try {
+      const actuations = await this.trainnersService.findAllActuations();
+      return response.status(200).json({
+        actuations,
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   @Get()
   async findAll(@Res() response: Response) {
     try {
