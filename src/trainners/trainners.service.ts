@@ -108,6 +108,27 @@ export class TrainnersService {
   }
 
   async remove(id: string) {
+    const traiinerPerId = await this.prisma.trainner.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        actuation: true,
+      },
+    });
+
+    const actuations = traiinerPerId?.actuation;
+    if (actuations) {
+      actuations.forEach(
+        async (actuation) =>
+          await this.prisma.actuation.delete({
+            where: {
+              id: actuation.id,
+            },
+          }),
+      );
+    }
+
     const trainner = await this.prisma.trainner.delete({
       where: {
         id,
