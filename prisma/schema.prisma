@@ -130,6 +130,7 @@ model Trainner {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   photoLink   String?
+  instagram   String?
   phoneWpp    String?
   price       Float?
   description String?
