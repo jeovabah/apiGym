@@ -145,6 +145,7 @@ model Actuation {
   trainnerId  String        @db.ObjectId
   trainner    Trainner      @relation(fields: [trainnerId], references: [id])
   actuation   String
+  icon        String        @default("")
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
