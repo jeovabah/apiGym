@@ -121,7 +121,7 @@ export class GymService {
         },
         images: data?.images,
         listPrices: {
-          create: data?.listPrices,
+          create: data?.listPrices || [],
         },
       },
     });

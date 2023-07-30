@@ -130,6 +130,19 @@ export class TrainnersController {
         trainner,
       });
     } catch (error) {
+      console.log('error');
+      throw error;
+    }
+  }
+
+  @Delete(':id/actuation/')
+  async removeActuation(@Param('id') id: string, @Res() response: Response) {
+    try {
+      const trainner = await this.trainnersService.removeActuation(id);
+      return response.status(200).json({
+        trainner,
+      });
+    } catch (error) {
       console.log(error);
       throw error;
     }

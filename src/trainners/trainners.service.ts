@@ -137,4 +137,14 @@ export class TrainnersService {
 
     return trainner;
   }
+
+  async removeActuation(actuationId: string) {
+    const actuation = await this.prisma.actuation.delete({
+      where: {
+        id: actuationId,
+      },
+    });
+
+    return actuation;
+  }
 }
