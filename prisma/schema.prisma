@@ -160,3 +160,11 @@ model PostDinamically {
   updatedAt   DateTime      @updatedAt
 }
 
+model GeneralSettings {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  contactWppGym String?     @default("Olá, gostaria de saber mais sobre o seu serviço. Vim do GymGreen, poderia me informar mais detalhes sobre o cupom?")
+  contactWppTrainner String? @default("Olá, gostaria de saber mais sobre o seu serviço. Vim do GymGreen, poderia me informar mais detalhes sobre o seu trabalho?")
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
