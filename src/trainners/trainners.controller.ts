@@ -61,7 +61,6 @@ export class TrainnersController {
     @Res() response: Response,
   ) {
     try {
-      console.log('chegando aqui');
       const trainner = await this.trainnersService.updateActuation(
         id,
         actuationId,
@@ -154,6 +153,27 @@ export class TrainnersController {
       const trainner = await this.trainnersService.remove(id);
       return response.status(200).json({
         trainner,
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  @Post('like')
+  async handleLiked(
+    @Body()
+    data: {
+      id: string;
+      liked?: boolean | null;
+    },
+    @Res() response: Response,
+  ) {
+    try {
+      const liked = await this.trainnersService.handleLiked(data);
+
+      return response.status(200).json({
+        liked,
       });
     } catch (error) {
       console.log(error);

@@ -147,4 +147,34 @@ export class TrainnersService {
 
     return actuation;
   }
+
+  async handleLiked(data: { id: string; liked?: boolean | null }) {
+    if (!data?.liked) {
+      const like = await this.prisma.trainner.update({
+        where: {
+          id: data.id,
+        },
+        data: {
+          likes: {
+            increment: 1,
+          },
+        },
+      });
+
+      return like;
+    } else {
+      const disliked = await this.prisma.trainner.update({
+        where: {
+          id: data.id,
+        },
+        data: {
+          likes: {
+            decrement: 1,
+          },
+        },
+      });
+
+      return disliked;
+    }
+  }
 }

@@ -133,6 +133,7 @@ model Trainner {
   instagram   String?
   phoneWpp    String?
   price       Float?
+  likes       Int           @default(0)
   description String?
   about       String?
   actuation   Actuation[]
