@@ -54,7 +54,15 @@ export class CommunitiesService {
           select: {
             id: true,
             name: true,
+            phoneWpp: true,
+            activity: true,
+            frequency_space: true,
+            instagram: true,
+            space: true,
+            text_motivational: true,
             photoLink: true,
+            createdAt: true,
+            updatedAt: true,
           },
         },
         communityLikes: true, // Inclui os likes recebidos pela comunidade
