@@ -13,6 +13,11 @@ export class UsersService {
         name: createUserDto.name,
         password: createUserDto.password,
         phoneWpp: createUserDto.phoneWpp,
+        activity: createUserDto.activity ?? null,
+        frequency_space: createUserDto.frequency_space ?? null,
+        instagram: createUserDto.instagram ?? null,
+        space: createUserDto.space ?? null,
+        text_motivational: createUserDto.text_motivational ?? null,
       },
     });
 

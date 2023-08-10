@@ -90,6 +90,11 @@ model User {
   updatedAt   DateTime             @updatedAt
   comments    CommentsInCommunity[]
   likes       Like[]                // Adicione este campo para representar os likes que o usuário deu
+  space       String?              @default("")
+  activity    String?              @default("")
+  frequency_space String?          @default("")
+  text_motivational String?        @default("")
+  instagram   String?              @default("")   
 }
 
 
@@ -136,6 +141,7 @@ model Trainner {
   likes       Int           @default(0)
   description String?
   about       String?
+  occupation  String?
   actuation   Actuation[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
