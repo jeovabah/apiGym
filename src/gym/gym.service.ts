@@ -62,37 +62,19 @@ export class GymService {
 
   async updateGym(data: GymsDTO): Promise<any> {
     if (data?.shifts?.length > 0) {
-      // Verificar se existem registros relacionados na tabela Shift
-      const shifts = await this.prisma.shift.findMany({
+      await this.prisma.shift.deleteMany({
         where: {
           gymId: data.id,
         },
       });
-
-      if (shifts.length > 0) {
-        await this.prisma.shift.deleteMany({
-          where: {
-            gymId: data.id,
-          },
-        });
-      }
     }
 
     if (data?.listPrices?.length > 0) {
-      // Verificar se existem registros relacionados na tabela ListPrice
-      const listPrices = await this.prisma.prices.findMany({
+      await this.prisma.prices.deleteMany({
         where: {
           gymId: data.id,
         },
       });
-
-      if (listPrices.length > 0) {
-        await this.prisma.prices.deleteMany({
-          where: {
-            gymId: data.id,
-          },
-        });
-      }
     }
 
     const result = await this.prisma.gym.update({
