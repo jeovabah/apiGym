@@ -6,4 +6,6 @@ export class CreateTrainnerDto {
   trainnerDetails?: any;
   actuation?: any;
   actuationId?: string;
+  occupation: string;
+  experience?: string;
 }
