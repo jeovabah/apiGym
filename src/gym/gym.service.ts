@@ -61,53 +61,74 @@ export class GymService {
   }
 
   async updateGym(data: GymsDTO): Promise<any> {
-    const { id, shifts, listPrices, ...otherData } = data;
+    if (data?.shifts?.length > 0) {
+      // Verificar se existem registros relacionados na tabela Shift
+      const shifts = await this.prisma.shift.findMany({
+        where: {
+          gymId: data.id,
+        },
+      });
 
-    // Deletar shifts e listPrices não presentes em data
-    await this.prisma.shift.deleteMany({
+      if (shifts.length > 0) {
+        await this.prisma.shift.deleteMany({
+          where: {
+            gymId: data.id,
+          },
+        });
+      }
+    }
+
+    if (data?.listPrices?.length > 0) {
+      // Verificar se existem registros relacionados na tabela ListPrice
+      const listPrices = await this.prisma.prices.findMany({
+        where: {
+          gymId: data.id,
+        },
+      });
+
+      if (listPrices.length > 0) {
+        await this.prisma.prices.deleteMany({
+          where: {
+            gymId: data.id,
+          },
+        });
+      }
+    }
+
+    const result = await this.prisma.gym.update({
       where: {
-        gymId: id,
-        id: {
-          notIn: shifts?.map((s) => s.id) || [],
+        id: data?.id,
+      },
+      data: {
+        address: data?.address,
+        name: data?.name,
+        latitude: data?.latitude,
+        longitude: data?.longitude,
+        description: data?.description,
+        website: data?.website || '',
+        cupomActive: data?.cupomActive || false,
+        logo: data?.logo,
+        phoneWpp: data?.phoneWpp,
+        instagram: data?.instagram,
+        valueMonth: data?.valueMonth,
+        anualStart: data?.anualStart,
+        details1: data?.details1,
+        details2: data?.details2,
+        details3: data?.details3,
+        details4: data?.details4,
+        shifts: {
+          create: data?.shifts,
+        },
+        images: data?.images,
+        listPrices: {
+          create: data?.listPrices || [],
         },
       },
     });
-    await this.prisma.prices.deleteMany({
-      where: {
-        gymId: id,
-        id: {
-          notIn: listPrices?.map((lp) => lp.id) || [],
-        },
-      },
-    });
-
-    // Transação para atualizar a academia e recriar os registros relacionados
-    const result = await this.prisma.$transaction([
-      this.prisma.gym.update({
-        where: { id },
-        data: {
-          ...otherData,
-          shifts: {
-            upsert:
-              shifts?.map((shift) => ({
-                where: { id: shift.id },
-                update: shift,
-                create: shift,
-              })) || [],
-          },
-          listPrices: {
-            upsert:
-              listPrices?.map((price) => ({
-                where: { id: price.id },
-                update: price,
-                create: price,
-              })) || [],
-          },
-        },
-      }),
-    ]);
-
-    return result[0];
+    if (!result) {
+      throw new Error('Academia não atualizada');
+    }
+    return result;
   }
 
   async deleteGym(data: GymsDTO): Promise<any> {
