@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { NotificationDTO, storageDTO } from './notification.dto';
 import { Response } from 'express';
 import { NotificationService } from './notication.service';
@@ -36,11 +36,30 @@ export class NotificationController {
     @Body() body: NotificationDTO,
   ): Promise<any> {
     try {
-      const deviceToken = await this.notificationService.sendNotification(body);
+      const deviceToken =
+        await this.notificationService.sendNotificationFirebase(body);
 
       return response.status(200).json({
         deviceToken,
         message: 'Notificação enviada com sucesso!',
+      });
+    } catch (e) {
+      console.log(e);
+
+      return response.status(400).json({
+        message: e.message,
+      });
+    }
+  }
+
+  @Get('getNotifications')
+  async getNotifications(@Res() response: Response): Promise<any> {
+    try {
+      const notifications = await this.notificationService.getNotifications();
+
+      return response.status(200).json({
+        data: notifications,
+        message: 'Notificações encontradas com sucesso!',
       });
     } catch (e) {
       console.log(e);
