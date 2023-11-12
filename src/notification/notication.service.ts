@@ -55,6 +55,8 @@ export class NotificationService {
         .catch((error) => {
           console.log('Error sending message:', error);
         });
+
+      await this.storageNotification(request);
     } catch (e) {
       console.log('Error sending notifications catch:', e);
     }
